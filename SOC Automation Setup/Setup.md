@@ -87,6 +87,7 @@ TheHive Installation Workflow:
 -Install Java
 -Install Cassandra (Cassandra is database that used by TheHive for storing data.)
 -Install Elasticsearch ( Elasticsearch is used by TheHive for indexing and searching data.)
+-Install TheHive
 
 ## **3.1. Create a Droplet on DigitalOcean and Choose the Operating System:**
 
@@ -102,4 +103,48 @@ TheHive Installation Workflow:
 
 `apt install wget gnupg apt-transport-https git ca-certificates ca-certificates-java curl  software-properties-common python3-pip lsb-release`
 
+## ** 3.4. Install Java**
 
+`wget -qO- https://apt.corretto.aws/corretto.key | sudo gpg --dearmor  -o /usr/share/keyrings/corretto.gpg`
+`echo "deb [signed-by=/usr/share/keyrings/corretto.gpg] https://apt.corretto.aws stable main" |  sudo tee -a /etc/apt/sources.list.d/corretto.sources.list`
+`sudo apt update`
+`sudo apt install java-common java-11-amazon-corretto-jdk`
+`echo JAVA_HOME="/usr/lib/jvm/java-11-amazon-corretto" | sudo tee -a /etc/environment `
+`export JAVA_HOME="/usr/lib/jvm/java-11-amazon-corretto"`
+
+## ** 3.5. Install Cassandra**
+
+`wget -qO -  https://downloads.apache.org/cassandra/KEYS | sudo gpg --dearmor  -o /usr/share/keyrings/cassandra-archive.gpg`
+`echo "deb [signed-by=/usr/share/keyrings/cassandra-archive.gpg] https://debian.cassandra.apache.org 40x main" |  sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list`
+`sudo apt update`
+`sudo apt install cassandra`
+
+## ** 3.6. Install Elasticsearch**
+
+`wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo gpg --dearmor -o /usr/share/keyrings/elasticsearch-keyring.gpg`
+`sudo apt-get install apt-transport-https`
+`echo "deb [signed-by=/usr/share/keyrings/elasticsearch-keyring.gpg] https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee /etc/apt/sources.list.d/elastic-7.x.list`
+`sudo apt update`
+`sudo apt install elasticsearch`
+
+### ** 3.6.1. Elasticsearch Configuration**
+
+Create a jvm.options file in the /etc/elasticsearch/jvm.options.d directory and include the following settings to enhance Elasticsearch performance:
+
+`-Dlog4j2.formatMsgNoLookups=true`
+`-Xms2g`
+`-Xmx2g`
+
+## ** 3.6. Install TheHive**
+
+`wget -O- https://archives.strangebee.com/keys/strangebee.gpg | sudo gpg --dearmor -o /usr/share/keyrings/strangebee-archive-keyring.gpg`
+`echo 'deb [signed-by=/usr/share/keyrings/strangebee-archive-keyring.gpg] https://deb.strangebee.com thehive-5.2 main' | sudo tee -a /etc/apt/sources.list.d/strangebee.list`
+`sudo apt-get update`
+`sudo apt-get install -y thehive`
+
+By default TheHive will generate Username and Password, and we need to take a note of the username and password
+
+`Username: admin@thehive.local`
+`Password: secret`
+
+# **4. Configure Wazuh and TheHive**
