@@ -4,6 +4,8 @@ Welcome to the SOC (Security Operations Center) Automation project repository! T
 
 This project was greatly enhanced by the insights and tutorials from the [MyDFIR](https://www.youtube.com/playlist?list=PLEd_qaF8wpnXgdngqfsQtYYGM-IdtuxmC) YouTube channel. Their detailed videos played a crucial role in understanding and executing the different elements of the SOC Automation Project.
 
+[Click here to visit SOC Automation Project Setup!](./SOC%20Automation%20Setup/Setup.md)
+
 # **1. Introduction**
 ## **1.1. Overview**
 The SOC Automation Project is focused on developing an automated Security Operations Center (SOC) workflow to optimize event monitoring, alerting, and incident response. Utilizing robust open-source tools like Wazuh, Shuffle, and TheHive, the project aims to improve the efficiency and performance of SOC operations. It includes configuring a Windows 10 client with Sysmon for detailed event logging, Wazuh for event management and alerting, Shuffle for automating workflows, and TheHive for case management and coordinated response actions.
