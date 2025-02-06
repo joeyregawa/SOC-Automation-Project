@@ -341,7 +341,7 @@ archive file on Wazuh-Manager that capture the Mimikatz logs:
 ![alt text](<../images/Configure Wazuh to Log All Events 7.png>)
 ![alt text](<../images/Configure Wazuh to Log All Events 8.png>)
 
-# **7. Enhanced Alerts by Adding Custom Mimikatz Alerts **
+# **7. Enhanced Alerts by Adding Custom Mimikatz Alerts**
 
 ## **7.1. Analyze the Mimikatz logs**
 
@@ -372,7 +372,7 @@ Custom Rules Example (Click the custom rules Button):
 
 *T1003 is used because Mimikatz will do OS Credential Dumping.  Than save the file and restart the Wazuh manager service.*
 
-## **7.3. Test The Custom Rules for `originalFileName`**
+## **7.3. Test Custom Rules for `originalFileName`**
 
 To test the custom rule we made earlier, try to change the Mimikatz file name on Windows 10 Machine and than execute the Mimikatz App that has been renamed. 
 
@@ -384,8 +384,144 @@ Verify that the custom rule triggers an alert in Wazuh, even with the renamed Mi
 ![alt text](<../images/Enhanced Alerts by Adding Custom Mimikatz Alerts 6.png>)
 ![alt text](<../images/Enhanced Alerts by Adding Custom Mimikatz Alerts 7.png>)
 
+# **8. SOC Automation with Shuffle and TheHive**
+## **8.1. Create a Shuffle Account**
+open the Shuffle website and create an account (https://shuffler.io/)
 
+## **8.2. Create a Shuffle Account**
+Create New Workflow:
 
+![alt text](<../images/Shuffle 1.png>)
 
+For the workflow name in this project we will use SOC Automation Alb, as for the use case we can choose it freely.
 
+## **8.3. Add Webhook Trigger**
+Webhook Triggers is used to pass the Wazuh alert to Shuffle. Set a name for the webhook and copy the Webhook URI from the right side. This URI will be added to the Ossec configuration on the Wazuh manager.
 
+![alt text](<../images/Shuffle 2.png>)
+
+## **8.4. Configure the “Change Me” Node**
+Click the “Change Me” Node and change the Find Actions to ‘Repeat back to me”. At Call box change the description value to select "Execution argument". Save the workflow.
+
+## **8.5. Configure Wazuh to Connect to Shuffle**
+Connect Wazuh to Shuffle we need to modify the ossec.conf  file and add an integration for Shuffle: 
+
+        nano /var/ossec/etc/ossec.conf
+
+        <integration>
+            <name>shuffle</name>
+            <hook_url>https://shuffler.io/api/v1/hooks/webhook_0af8a049-f2cb-420b-af58-5ebc3c40c7df </hook_url>
+            <level>3</level>
+            <alert_format>json</alert_format>
+        </integration>
+
+Replace the `<level> `tag with `<rule_id>100002</rule_id>` to send alerts based on the custom Mimikatz rule ID.
+
+        <integration>
+            <name>shuffle</name>
+            <hook_url>https://shuffler.io/api/v1/hooks/webhook_0af8a049-f2cb-420b-af58-5ebc3c40c7df </hook_url>
+            <rule_id>100002</rule_id>
+            <alert_format>json</alert_format>
+        </integration>
+
+to apply the change, restart the wazuh-manager:
+
+        systemctl resart wazuh-manager.service
+
+## **8.6. Test Shuffle-Wazuh Integration**
+Regenerate the Mimikatz telemetry on the Windows client machine. In Shuffle, click on the webhook trigger ("Wazuh-Alerts") and click "Start".
+
+![alt text](<../images/Shuffle 3.png>)
+
+*Verify that the alert is received in Shuffle.*
+
+## **8.7. Build a Mimikatz Workflow**
+**Workflow Steps:**
+
+1. Mimikatz alert sent to Shuffle
+2. Shuffle receives Mimikatz alert / extract SHA256 hash from file
+3. Check reputation score with VirusTotal
+4. Send details to TheHive to create an alert
+5. Send an email to the SOC analyst to begin the investigation
+
+### **8.7.1. Extract SHA256 Hash**
+Hash value need to be extract to be used at VirusTotal to check the reputation score. Values for the hashes are appended by their hash type (e.g., `sha1=hashvalue`). In order to automate the workflow, parse out the hash value.
+
+To do that, we need to click on the “Change Me” node than select “Regex capture group”, than in the “Input Data” select “hashes” option. In the regex field, type the regex value of the hashes.
+
+        SHA256=([A-F0-9]{64})
+
+![alt text](<../images/SOC Automation 1.png>)
+
+### **8.7.2. Integrate with VirusTotal**
+Create an account of Virustotal to get the API access.
+Copy the API key an return to the shuffle, use the API key on the right side or click "Authenticate VirusTotal v3" to authenticate, Change the "ID" field to the "SHA256Regex" value created earlier. Test the integration with VirusTotal.
+
+![alt text](<../images/SOC Automation 2.png>)
+
+### **8.7.3. Integrate TheHive with Shuffle**
+
+In Shuffle, look for "TheHive" under "Apps" and drag it into your workflow. You can connect to TheHive using the IP address and port number (9000) of the TheHive instance you set up on DigitalOcean.
+Log in to TheHive using the default credentials: `Username: admin@thehive.local Password: secret`
+
+### **8.7.4. Configure TheHive**
+
+Create new Organization and user for the organization in TheHive.
+
+Create new Organization
+![alt text](<../images/SOC Automation 3.png>)
+
+Set new passwords for the users. (`username: <username>, password: <password>`)
+
+For the SOAR user created for Shuffle integration, generate an API key. This API key is used for authenticate with Shuffle 
+
+![alt text](<../images/SOC Automation 4.png>)
+
+Log out from the admin account and log in with one of the user accounts.
+
+### **8.7.5. Configure Shuffle to Work With TheHive. **
+
+        {
+            "_id":"~8134832"
+            "_type":"Alert"
+            "_createdBy":"shuffle@test.com"
+            "_createdAt":1738756289644
+            "type":"Internal"
+            "source":"Wazuh"
+            "sourceRef":"Rule:100002"
+            "title":"Mimikatz Ussage Detected"
+            "description":"Mimikatz Detected on host: DESKTOP-4VDO2G0"
+            "severity":2
+            "severityLabel":"MEDIUM"
+            "date":1738756289525
+            "tags":[...]1 item
+            "tlp":2
+            "tlpLabel":"AMBER"
+            "pap":2
+            "papLabel":"AMBER"
+            "follow":true
+            "customFields":[]0 items
+            "observableCount":0
+            "status":"New"
+            "stage":"New"
+            "summary":"Details about the Mimikatz detection"
+            "extraData":{}0 items
+            "newDate":1738756289548
+            "timeToDetect":0
+        }
+
+The alert will appear in TheHive dashboard
+
+![alt text](<../images/SOC Automation 5.png>)
+![alt text](<../images/SOC Automation 8.png>)
+
+Refer to the body part of TheHive in Shuffle to determine what to include in these fields. Save and Run again the workflow to see the alert update.
+
+![alt text](<../images/SOC Automation 9.png>)
+
+### **8.7.6. 1. Email Configuration **
+Set email with title and email body to alert the SOC analyst.
+
+![alt text](<../images/SOC Automation 6.png>)
+
+![alt text](<../images/SOC Automation 7.png>)
