@@ -257,7 +257,7 @@ To ensure Elasticsearch is running properly:
 ![alt text](<../images/Wazuh-Agent Config 2.png>)
 ![alt text](<../images/Wazuh-Agent Config 3.png>)
 
-# **5. Generate Telemetry and Custom Alerts **
+# **5. Generate Telemetry and Custom Alerts**
 
 ## **5.1. Configure Sysmon Event Forwarding to Wazuh**
 Navigate to `C:\Program Files (x86)\ossec-agent` and open the `ossec.conf` file with a text editor (e.g., Notepad). Optional: make a copy of `ossec.conf` for backup
@@ -276,6 +276,47 @@ Navigate to `C:\Program Files (x86)\ossec-agent` and open the `ossec.conf` f
 Click the more button, continue click the threat hunting button. In the threat hunting page, click event button and search for sysmon.
 
 ![alt text](<../images/Wazuh-Agent Config 3.png>)
+
+# **6. Download & Generate Mimikatz Telemetry**
+
+** *Mimikatz is used by red teams or attackers to collect or gather or extract credentials from target machine.* **
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
