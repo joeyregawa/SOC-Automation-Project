@@ -330,7 +330,7 @@ To check if Mimikatz logs are being archived, use cat and grep commands on t
 
 If no Mimikatz events are present in the archives, it indicates that no Mimikatz event was generated, and you won't find any related events in the Wazuh web interface.
 
-## **6.67 Relaunch Mimikatz**
+## **6.7. Relaunch Mimikatz**
 Relaunch Mimikatzt on the Windows Machines and check the event viewers to ensure that Sysmon is capturing Mimikatz events.
 
 ![alt text](<../images/Configure Wazuh to Log All Events 5.png>)
@@ -341,37 +341,48 @@ archive file on Wazuh-Manager that capture the Mimikatz logs:
 ![alt text](<../images/Configure Wazuh to Log All Events 7.png>)
 ![alt text](<../images/Configure Wazuh to Log All Events 8.png>)
 
+# **7. Enhanced Alerts by Adding Custom Mimikatz Alerts **
 
+## **7.1. Analyze the Mimikatz logs**
 
+Examine the Mimikatz logs and identify a suitable field for crafting an alert. In this example, we will use the `originalFileName` field. this filed is used for best practice, for example if we use the `data.win.eventdata.image`, when the attackers change the name or rename the Mimikatz the alert will be bypass by the attackers, however if we use the `originalFileName`, whenever the attackers rename it, it will trigger the alert since it is tracking the `originalFileName`.
 
+![alt text](<../images/Enhanced Alerts by Adding Custom Mimikatz Alerts 1.png>)
 
+## **7.2. Create a new rule that will track the `originalFIleName`**
 
+we can create the rules by using CLI (`nano /var/ossec/etc/rules/local_rules.xml`) or directly use the Wazuh web interface (Server Management > Rules>Manage Rules Files).
 
+![alt text](<../images/Enhanced Alerts by Adding Custom Mimikatz Alerts 2.png>)
 
+These are Sysmon related rules build in Wazuh for event ID =1. Copy one of these rule for reference and modify as needed.
 
+Custom Rules Example (Click the custom rules Button):
 
+![alt text](<../images/Enhanced Alerts by Adding Custom Mimikatz Alerts 3.png>)
 
+        <rule id="100002" level="15">
+            <if_group>sysmon_event1</if_group>
+            <field name="win.eventdata.originalFileName" type="pcre2">(?i)mimikatz\.exe</field>
+            <description>Mimikatz Usage Detected</description>
+            <mitre>
+            <id>T1003</id>
+            </mitre>
+        </rule>        
 
+*T1003 is used because Mimikatz will do OS Credential Dumping.  Than save the file and restart the Wazuh manager service.*
 
+## **7.3. Test The Custom Rules for `originalFileName`**
 
+To test the custom rule we made earlier, try to change the Mimikatz file name on Windows 10 Machine and than execute the Mimikatz App that has been renamed. 
 
+![alt text](<../images/Enhanced Alerts by Adding Custom Mimikatz Alerts 4.png>)
+![alt text](<../images/Enhanced Alerts by Adding Custom Mimikatz Alerts 5.png>)
 
+Verify that the custom rule triggers an alert in Wazuh, even with the renamed Mimikatz executable.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+![alt text](<../images/Enhanced Alerts by Adding Custom Mimikatz Alerts 6.png>)
+![alt text](<../images/Enhanced Alerts by Adding Custom Mimikatz Alerts 7.png>)
 
 
 
