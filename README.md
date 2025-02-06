@@ -62,7 +62,7 @@ Ref 3: Shuffle recieve alerts and perform automated process of alerting and inci
 
 ### **3.1.4. Shuffle Recieve Back the Data From VirusTotal and Send It to TheHiveto Create Alert.** 
 
-![image](https://github.com/user-attachments/assets/b81df179-8fd0-4594-bb05-d4ac4ba77dc6)
+![alt text](<images/Virus Total Recieve the data.png>)
 
 Ref 4: Virus Total Recieve the data.
 
@@ -98,21 +98,21 @@ Ref 4: Virus Total Recieve the data.
      }
 Ref 5.1 : Shuffle send data to TheHive to generate alert.
 
-![image](https://github.com/user-attachments/assets/1d3a5e3f-4c14-4048-8f9b-0ffa3d7173f0)
+![alt text](<images/Shuffle generate alert 1.png>)
 
-![image](https://github.com/user-attachments/assets/3fadae6c-ff69-4d2a-8f7f-789f7394ca7c)
+![alt text](<images/Shuffle generate alert 2.png>)
 
 *note:Refer to the body part of TheHive in Shuffle to determine what to include in these fields. Save and Run again the workflow to see the alert update.*
 
-![image](https://github.com/user-attachments/assets/78e8b06c-a9fa-42d5-8e66-a100eb259868)
+![alt text](<images/Enhanced Shuffle Alert.png>)
 
 Ref 5.2 : TheHive recieve data and generate alert.
 
 ### **3.1.5. Send an email to the SOC analyst to begin the investigation.** 
 
-![image](https://github.com/user-attachments/assets/8398dc30-2f6e-4f1a-bcdf-efb9f16801db)
+![alt text](<images/Shuffle Send Email to SOC analyst.png>)
 
-Ref 6 Send an email to the SOC analyst to begin the investigation.
+Ref 6 :  Send an email to the SOC analyst to begin the investigation.
 
 # **4. Conclusion**
 
