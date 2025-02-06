@@ -97,27 +97,27 @@ TheHive Installation Workflow:
 
 ## **3.2. Update and Upgrade the System:**
 
-`sudo apt-get update && sudo apt-get upgrade`
+        sudo apt-get update && sudo apt-get upgrade
 
 ## ** 3.3. Install Dependencies**
 
-`apt install wget gnupg apt-transport-https git ca-certificates ca-certificates-java curl  software-properties-common python3-pip lsb-release`
+        apt install wget gnupg apt-transport-https git ca-certificates ca-certificates-java curl  software-properties-common python3-pip lsb-release`
 
 ## ** 3.4. Install Java**
 
-`wget -qO- https://apt.corretto.aws/corretto.key | sudo gpg --dearmor  -o /usr/share/keyrings/corretto.gpg`
-`echo "deb [signed-by=/usr/share/keyrings/corretto.gpg] https://apt.corretto.aws stable main" |  sudo tee -a /etc/apt/sources.list.d/corretto.sources.list`
-`sudo apt update`
-`sudo apt install java-common java-11-amazon-corretto-jdk`
-`echo JAVA_HOME="/usr/lib/jvm/java-11-amazon-corretto" | sudo tee -a /etc/environment `
-`export JAVA_HOME="/usr/lib/jvm/java-11-amazon-corretto"`
+        wget -qO- https://apt.corretto.aws/corretto.key | sudo gpg --dearmor  -o /usr/share/keyrings/corretto.gpg
+        echo "deb [signed-by=/usr/share/keyrings/corretto.gpg] https://apt.corretto.aws stable main" |  sudo tee -a /etc/apt/sources.list.d/corretto.sources.list
+        sudo apt update
+        sudo apt install java-common java-11-amazon-corretto-jdk
+        echo JAVA_HOME="/usr/lib/jvm/java-11-amazon-corretto" | sudo tee -a /etc/environment 
+        export JAVA_HOME="/usr/lib/jvm/java-11-amazon-corretto"
 
 ## ** 3.5. Install Cassandra**
 
-`wget -qO -  https://downloads.apache.org/cassandra/KEYS | sudo gpg --dearmor  -o /usr/share/keyrings/cassandra-archive.gpg`
-`echo "deb [signed-by=/usr/share/keyrings/cassandra-archive.gpg] https://debian.cassandra.apache.org 40x main" |  sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list`
-`sudo apt update`
-`sudo apt install cassandra`
+        wget -qO -  https://downloads.apache.org/cassandra/KEYS | sudo gpg --dearmor  -o /usr/share/keyrings/cassandra-archive.gpg
+        echo "deb [signed-by=/usr/share/keyrings/cassandra-archive.gpg] https://debian.cassandra.apache.org 40x main" |  sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list
+        sudo apt update
+        sudo apt install cassandra
 
 ## ** 3.6. Install Elasticsearch**
 
