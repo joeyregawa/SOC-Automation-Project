@@ -279,9 +279,67 @@ Click the more button, continue click the threat hunting button. In the threat h
 
 # **6. Download & Generate Mimikatz Telemetry**
 
-** *Mimikatz is used by red teams or attackers to collect or gather or extract credentials from target machine.* **
+*Mimikatz is used by red teams or attackers to collect or gather or extract credentials from target machine.*
 
+## **6.1. Download Mimikatz**
 
+Before dowloading Mimikatz to Windows 10 machine, you may need to temporarily disable Windows Defender or exclude the download directory from scanning. Dowload Mimikatz (https://github.com/gentilkiwi/mimikatz/releases/tag/2.2.0-20220919)
+
+![alt text](<../images/Mimikatz 1.png>)
+
+## **6.2. Execute Mimikatz**
+Use PowerShell, navigate to the directory where Mimikatz is downloaded, and execute it.
+
+![alt text](<../images/Mimikatz 2.png>)
+
+## **6.3. Configure Wazuh to Log All Events**
+Open Wazuh-manager terminal. Before modifying the `ossec.conf` file, create a copy for backup `cp /var/ossec/etc/ossec.conf ~/ossec-backup.conf`. Change the <logall> and <loggal_json> to `yes`, continue by resarting the wazuh-manager to run the changes we made.
+
+![alt text](<../images/Configure Wazuh to Log All Events 1.png>)
+
+To apply change we need to restrat the Wazuh-Manager
+
+        systemctl restart wazuh-manager.service
+
+This configuration directs Wazuh to store all logs in the /`var/ossec/logs/archives/ directory`.
+
+## **6.4. Configure Filebeat**
+ To enable Wazuh to ingest the archived logs we made earlier, we need to modify the Filebeat configuration 
+        
+        nano /etc/filebeat/filebeat.yml
+
+under the `filebeat.modules` change the `archives: enabled : true`  , than restart the filebeat (`systemctl restart filebeat`).
+
+![alt text](<../images/Configure Wazuh to Log All Events 2.png>)
+
+## **6.5. Create a New Index in Wazuh**
+After Filebeat and ossec.conf have been updated, create New Index by opening the menu, than choose the dashboard management, index patterns, create index pattern. 
+
+Create a new index named `wazuh-archives-*` to cover all archived logs. On the next page, select `"timestamp"` as the time field and create the index.
+
+![alt text](<../images/Configure Wazuh to Log All Events 3.png>)
+
+*Cofigurations is need because only logs or event that trigger by rules will show up*
+
+## **6.6. Troubleshoot Mimikatz Logs**
+To check if Mimikatz logs are being archived, use cat and grep commands on the archived logs in the Wazuh manager CLI:
+
+        cat /var/ossec/logs/archives/archives.log | grep -i mimikatz
+
+![alt text](<../images/Configure Wazuh to Log All Events 4.png>)
+
+If no Mimikatz events are present in the archives, it indicates that no Mimikatz event was generated, and you won't find any related events in the Wazuh web interface.
+
+## **6.67 Relaunch Mimikatz**
+Relaunch Mimikatzt on the Windows Machines and check the event viewers to ensure that Sysmon is capturing Mimikatz events.
+
+![alt text](<../images/Configure Wazuh to Log All Events 5.png>)
+
+archive file on Wazuh-Manager that capture the Mimikatz logs:
+
+![alt text](<../images/Configure Wazuh to Log All Events 6.png>)
+![alt text](<../images/Configure Wazuh to Log All Events 7.png>)
+![alt text](<../images/Configure Wazuh to Log All Events 8.png>)
 
 
 
