@@ -479,7 +479,9 @@ For the SOAR user created for Shuffle integration, generate an API key. This API
 
 Log out from the admin account and log in with one of the user accounts.
 
-### **8.7.5. Configure Shuffle to Work With TheHive. **
+### **8.7.5. Configure Shuffle to Work With TheHive**
+
+
 
         {
             "_id":"~8134832"
@@ -519,7 +521,8 @@ Refer to the body part of TheHive in Shuffle to determine what to include in the
 
 ![alt text](<../images/SOC Automation 9.png>)
 
-### **8.7.6. 1. Email Configuration **
+### **8.7.6. Email Configuration**
+
 Set email with title and email body to alert the SOC analyst.
 
 ![alt text](<../images/SOC Automation 6.png>)
