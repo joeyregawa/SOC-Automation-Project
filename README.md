@@ -9,7 +9,8 @@ This project was greatly enhanced by the insights and tutorials from the [MyDFIR
 The SOC Automation Project is focused on developing an automated Security Operations Center (SOC) workflow to optimize event monitoring, alerting, and incident response. Utilizing robust open-source tools like Wazuh, Shuffle, and TheHive, the project aims to improve the efficiency and performance of SOC operations. It includes configuring a Windows 10 client with Sysmon for detailed event logging, Wazuh for event management and alerting, Shuffle for automating workflows, and TheHive for case management and coordinated response actions.
 
 ### SOC Automation Project Diagram: ###
-![image](https://github.com/user-attachments/assets/dbb28f16-7e2f-416d-b91f-ee9df9bb22c7)
+
+![alt text](<images/SOC automation Diagram.jpg>)
 
 ## **1.2. Project Objectives:**
 - **Automate Event Collection and Analysis:** Ensure security events are collected and analyzed in real-time with minimal manual intervention, enabling proactive threat detection and swift responses.
@@ -41,23 +42,23 @@ To demonstrate how this SOC automation works, Mimikatz will be used as a simulat
 ## **3.1. Visual Representation**
 ### **3.1.1. WIndows 10 Machine (Wazuh-agent) execute Mimikatz and send event to Wazuh-Manager** 
 
-![image](https://github.com/user-attachments/assets/6c8f508d-58fc-497c-a566-9f8766805579)
+![alt text](<images/Mimikatz rename execute.png>)
 
 Ref 1: Mimikatz file name has been rename and Windows Machine execute the Mimikatz rename file.
 
 ### **3.1.2. Wazuh-Manager Trigger Alerts & Perform Responsive Action** 
 
-![image](https://github.com/user-attachments/assets/683c8a0e-61bd-408e-8a08-2c8e41ab4220)
+![alt text](<images/Wazuh_manager MITRE-ATT&CK event .png>)
 
-![image](https://github.com/user-attachments/assets/5dd683e6-d0d8-4d97-adfd-0ca082aacffa)
+![alt text](<images/Wazuh_manager Threat Hunting event .png.png>)
 
 Ref 2: Wazuh-Manager trigger alerts.
 
 ### **3.1.3. Shuffle Recieve and Demonstrating the Automated Process of Alerting and Incident Response.** 
 
-![image](https://github.com/user-attachments/assets/af9b6ab2-d834-471f-b8b7-0869a1f3dfd1)
+![alt text](<images/Shuffle Workflow.png>)
 
-Ref 3: Shuffle revice the alerts and perform automated process of alerting and incident response.
+Ref 3: Shuffle recieve alerts and perform automated process of alerting and incident response.
 
 ### **3.1.4. Shuffle Recieve Back the Data From VirusTotal and Send It to TheHiveto Create Alert.** 
 
@@ -132,5 +133,3 @@ By adopting automation and harnessing the capabilities of Wazuh, TheHive, and Sh
 
 # **5. Refferences**
 https://www.youtube.com/playlist?list=PLEd_qaF8wpnXgdngqfsQtYYGM-IdtuxmC
-
-
